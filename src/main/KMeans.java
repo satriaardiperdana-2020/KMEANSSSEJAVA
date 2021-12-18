@@ -78,16 +78,16 @@ public class KMeans {
     public static void main(String[] args) {
         try {
             // read data
-            DataSet data = new DataSet("files/wine.csv");
+            DataSet data = new DataSet("files/sample.csv");//buat baca nama file -> ini diubah jadi baca ke postgresql
 
             // remove prior classification attr if it exists (input any irrelevant attributes)
             data.removeAttr("Class");
 
             // cluster
-            kmeans(data, 2);
+            kmeans(data, 2);//cluster 2 masih manual bisa dibuat inputan 2 3 4 5 dst.
 
             // output into a csv
-            data.createCsvOutput("files/wineClustered.csv");
+            data.createCsvOutput("files/sampleClustered.csv");//output-> outputnya jadi tulis ke postgresql
 
         } catch (IOException e){
             e.printStackTrace();
