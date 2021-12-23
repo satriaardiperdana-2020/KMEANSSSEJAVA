@@ -8,12 +8,9 @@ import java.sql.Statement;
 import java.io.*;
 
 public class Koneksi {
-  // public Koneksi() {
-  // }
   private Connection connect;
   private Statement stmt = null;
   private String driverName = "org.postgresql.Driver"; // Driver Untuk Koneksi Ke PostgreSQL  
-  // private String driverName = "kluster"; // Driver Untuk Koneksi Ke PostgreSQL  
   private String jdbc = "jdbc:postgresql://";  
   private String host = "localhost:"; // Host ini Bisa Menggunakan IP Anda, Contoh : 192.168.100.100  
   private String port = "5432/"; // Port Default PostgreSQL  
@@ -23,7 +20,6 @@ public class Koneksi {
   private String password = "";  
   private String csvFilePath = "files/sample.csv";
   private String csvFilePathInsert = "files/sampleClustered.csv";
-  private int batchSize = 20;
 
   public Connection getKoneksi() throws SQLException {  
     if (connect == null) {  
@@ -63,14 +59,8 @@ public class Koneksi {
           fileWriter.newLine();
           fileWriter.write(line);
 
-          // System.out.println( "ID = " + id );
-          // System.out.println( "NAME = " + frekuensi);
-          // System.out.println( "AGE = " + total );
-          // System.out.println();
         }
-      // rs.close();
-      // stmt.close();
-      // connect.close();
+
       fileWriter.close();
 
     } catch (SQLException e) {
@@ -78,24 +68,17 @@ public class Koneksi {
       System.exit(0);
 
     }
-    System.out.println("Operation done successfully");
+    System.out.println("Operasi Query Data Sukses");
 
   }
 
   public void insertData() throws IOException, SQLException{
-    // ResultSet rs = stmt.executeQuery("insert into Result_Counting(normalisasi_frekuensi,normalisasi_total,clusterid) values(?,?,?)");
     BufferedReader lineReader = new BufferedReader(new FileReader(csvFilePathInsert));
     String lineText=null;
-    // int count=0;
     lineReader.readLine();
     stmt = connect.createStatement();
-    // String sql = "SELECT * FROM result_counting";
     String sqlDeteTable = "DELETE FROM result_counting";
-    // ResultSet rsdel = stmt.executeQuery(sql);
-
-    // if () {
-        stmt.executeUpdate(sqlDeteTable);
-    // }else{
+      stmt.executeUpdate(sqlDeteTable);
       while ((lineText=lineReader.readLine())!=null) {
         String[] data=lineText.split(",");
 
@@ -107,24 +90,9 @@ public class Koneksi {
         Double ntD = Double.parseDouble(nt);
         Double ciD = Double.parseDouble(ci);
 
-        // System.out.println("-----------------");
-        // System.out.println("Hasil [0] " + nf);
-        // System.out.println("Hasil [1] " + nt);
-        // System.out.println("Hasil [22 " + ci);
-        // System.out.println("-----------------");
-
         stmt = connect.createStatement();
         String sqlInsert = "INSERT INTO Result_Counting(normalisasi_frekuensi,normalisasi_total,clusterid) VALUES ('"+nfD+"','"+ntD+"','"+ciD+"')";
-        // String sql = "INSERT INTO Result_Counting (ID,NAME,AGE,ADDRESS,SALARY) "
-        //    + "VALUES (1, 'Paul', 32, 'California', 20000.00 );";
         stmt.executeUpdate(sqlInsert);
-      // }
-
-      // ResultSet rs = stmt.executeQuery("insert into Result_Counting(normalisasi_frekuensi,normalisasi_total,clusterid) values(+"nfD"+,+"ntD"+,+"ciD"+)");
-      // ResultSet rs = stmt.executeQuery();
-      // rs.setInt(1, parseInt(nf));
-      // rs.setString(2,address);
-      // rs.addBatch();
       
     }
 
